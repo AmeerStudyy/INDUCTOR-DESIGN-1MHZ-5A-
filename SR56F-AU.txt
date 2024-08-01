@@ -1,0 +1,43 @@
+***********************************************************************
+***********           PANJIT International Inc.             ***********
+***********************************************************************
+*Dec 01, 2017                                                         *
+*                                                                     *
+*This SPICE Model describes the characteristics of a typical device   *
+*and does not respresent the specification. Designer should refer to  *
+*the same type name data sheet for specification limits.              *
+***********************************************************************
+*$
+.subckt SR56F-AU A K 
+.param
++vc0 = 2.048e-0
++vc1 = 5.302e-2
++vc2 = 3.914e-3
++tc1 = 1.188e-1
++tc2 = 3.923e-2
+gdiode K A value={(vc0+vc1*v(K,A)+vc2*v(K,A)*v(K,A))*1e-6*(1.0+tc1*(temp-25)*exp(tc2*(temp-25)))}
+d1 A K diode
+.model diode d
+***** flag parameter ***
++level = 1   
+***** dc model parameter ***
++ibv = 0.5e-3   
++ is = 1.704e-6
++  n = 1.013
++ rs = 3.397e-2
++ikf = 0.4
++bv = 66
+***** capacitance parameter ***
++cjo = 5.572e-10
++  m = 4.635e-1
++ vj = 4.061e-1
++ fc = 0.5  
+***** temperature coefficient ***
++tnom = 25                     
++  eg = 6.551e-1
++ xti = 3 
++trs1 = 3.012e-3
++trs2 = -2.458e-5
++tikf = -5e-3
+.ends SR56F-AU
+*$

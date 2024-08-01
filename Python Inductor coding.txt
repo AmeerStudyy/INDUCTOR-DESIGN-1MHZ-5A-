@@ -1,0 +1,42 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+import femm
+import numpy as np
+import matplotlib.pyplot as plt
+
+femm.openfemm()
+femm.opendocument("Inductor design 1MHz.FEM");
+femm.mi_saveas("tem.fem")
+
+min=1; max=10; step=0.5
+Npoints = int((max-min)/step)
+I=np.arrange (min, max, step, dtype=np.float)
+W=np.arrange (min, max, step, dtype=np.float)
+L=np.arrange (min, max, step, dtype=np.float)
+
+print("FEMM Result:")
+for k in range (0, Npoints):
+    femm.mi_modifycircprop("Coil",5,I(k))
+    femm.mi_analyze()
+    femm.mi_loadsolution()
+    femm.mo_selectblock(6.5,6.2) 
+    femm.mo_selectblock(9.5,17.5)
+    femm.mo_selectblock(9.5,10.5)
+    
+    W[k]=femm.mo_blockintergral(2)
+    L[k]=2*W[k]/I[k]**2
+    print(I[k],L[k])
+    
+femm.closefemm()
+    
+
+plt.figure(1)
+plt.plot(I,L*1e3, 'rs--')
+plt.grid(True)
+plt.ylabel("Inductance (mH")
+plt.xlabel("Current (A)")
+plt.savefig("L_vs_Current.png",dpi=300)
